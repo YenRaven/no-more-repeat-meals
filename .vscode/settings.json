@@ -1,3 +1,12 @@
 {
-    "xo.enable": true
+    "xo.enable": true,
+    "xo.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript"
+    ],
+    "xo.options": {
+    
+    },
+    "editor.insertSpaces": false
 }
