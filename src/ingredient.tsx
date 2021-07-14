@@ -52,7 +52,7 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 	return <>
 		<Grid item xs={6}>
 			<FormControl className="food-control">
-				<TextField inputRef={foodInput} id="food" label="Ingredient" value={food} onChange={handleFoodChange} />
+				<TextField inputRef={foodInput} id="food" label="Ingredient" value={food} onChange={handleFoodChange} autoFocus />
 			</FormControl>
 		</Grid>
 		<Grid item xs={3}>
@@ -64,6 +64,7 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 			<FormControl className="measurement-control">
 				<InputLabel id="measurement-label">Unit</InputLabel>
 				<Select id="measurement" labelId="measurement-label" value={measurement} onChange={handleMeasurementChange}>
+					<MenuItem value="whole">whole</MenuItem>
 					<MenuItem value="oz">oz</MenuItem>
 					<MenuItem value="fl oz">fl oz</MenuItem>
 					<MenuItem value="lb">lb</MenuItem>
