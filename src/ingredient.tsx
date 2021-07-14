@@ -20,7 +20,7 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 		onChange({food: event.target.value, amount, measurement});
 	}, [amount, measurement, onChange]);
 	const handleAmountChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-		if (/^\d*\s?\d*\/?\d*$/.test(event.target.value)) {
+		if (/^\d*\s?\d*\/?\.?\d*$/.test(event.target.value)) {
 			onChange({food, amount: event.target.value, measurement});
 		}
 	}, [food, measurement, onChange]);
