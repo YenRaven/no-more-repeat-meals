@@ -7,7 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 export interface IngredientProps {
 	food?: string;
-	amount?: number;
+	amount?: string;
 	measurement?: string;
 }
 
@@ -20,7 +20,9 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 		onChange({food: event.target.value, amount, measurement});
 	}, [amount, measurement, onChange]);
 	const handleAmountChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-		onChange({food, amount: Number(event.target.value), measurement});
+		if (/^\d*\s?\d*\/?\d*$/.test(event.target.value)) {
+			onChange({food, amount: event.target.value, measurement});
+		}
 	}, [food, measurement, onChange]);
 	const handleMeasurementChange = useCallback((event: React.ChangeEvent<{
 		name?: string | undefined;
@@ -57,7 +59,7 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 		</Grid>
 		<Grid item xs={3}>
 			<FormControl className="amount-control">
-				<TextField inputRef={amountInput} id="amount" label="Quantity" type="number" value={amount} onChange={handleAmountChange} />
+				<TextField inputRef={amountInput} id="amount" label="Quantity" value={amount} onChange={handleAmountChange} />
 			</FormControl>
 		</Grid>
 		<Grid item xs={3}>
