@@ -1,3 +1,8 @@
+body {
+	background-image: url(./assets/seamless-3047729.jpg);
+	background-size: cover;
+}
+
 h2 {
 	margin-bottom: 0em;
 }
@@ -6,9 +11,9 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #5588e7;
   height: 100vh;
-  color: white;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .title-images-wrapper{
@@ -28,6 +33,7 @@ h2 {
 	justify-content: center;
 	flex: 0 0 100vw;
 	width: 100vw;
+	height: 60vmin;
 	padding: 0 50px;
 	box-sizing: border-box;
 }
@@ -48,18 +54,16 @@ h2 {
 }
 
 .App-header {
-  background-color: #282c34;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
-  padding-bottom: 20px;
 }
 
 .App-link {
-  color: #61dafb;
+  color: #005d77;
+  text-decoration: none;
 }
 
 .ingredient-list {

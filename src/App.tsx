@@ -3,10 +3,10 @@ import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {FormControlLabel, Checkbox, Grid, Fab} from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
-import img1 from './title-images/food-576547.svg';
-import img2 from './title-images/food-576600.svg';
-import img3 from './title-images/food-576689.svg';
-import img4 from './title-images/pancakes-575795.svg';
+import img1 from './assets/title-images/food-576547.svg';
+import img2 from './assets/title-images/food-576600.svg';
+import img3 from './assets/title-images/food-576689.svg';
+import img4 from './assets/title-images/pancakes-575795.svg';
 
 import {IngredientList} from './ingredient-list';
 import {IngredientProps} from './ingredient';
@@ -75,7 +75,12 @@ function App() {
 							<p>
 								Reduce your carbon footprint and use up your leftovers with brand new recipes!
 							</p>
-							<Link className="App-link" to="/get-started">Get started!</Link>
+							<Link className="App-link" to="/get-started">
+								<Fab variant="extended">
+									Get started!
+									<NavigateNextIcon />
+								</Fab>
+							</Link>
 						</header>
 					</Route>
 				</Switch>
