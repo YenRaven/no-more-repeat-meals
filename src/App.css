@@ -84,6 +84,14 @@ h2 {
 	align-items: center;
 }
 
+.recipe-row{
+	align-items: flex-start;
+}
+
+.recipe-btn{
+	justify-content: center;
+}
+
 .additional-ingredient {
 	margin: 5px;
 }

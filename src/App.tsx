@@ -13,6 +13,7 @@ import {IngredientProps} from './ingredient';
 import {AdditionalIngredientList} from './additional-ingredients-list';
 
 import './app.css';
+import {RecipeView} from './recipe-view';
 function App() {
 	const [ingredients, setIngredients] = useState<IngredientProps[]>([]);
 	const [additionalIngredients, setAdditionalIngredients] = useState<string[]>([]);
@@ -54,11 +55,18 @@ function App() {
 								/>
 							</Grid>
 							<Grid className="submit-button-wrapper" item xs={12}>
-								<Fab variant="extended">
-									Go!
-									<NavigateNextIcon />
-								</Fab>
+								<Link className="App-link" to="/recipe">
+									<Fab variant="extended">
+										Go!
+										<NavigateNextIcon />
+									</Fab>
+								</Link>
 							</Grid>
+						</Grid>
+					</Route>
+					<Route path="/recipe">
+						<Grid className="ingredient-list" container spacing={3}>
+							<RecipeView />
 						</Grid>
 					</Route>
 					<Route path="/">
