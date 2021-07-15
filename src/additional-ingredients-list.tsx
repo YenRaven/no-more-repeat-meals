@@ -29,7 +29,7 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 				}
 
 				onChange(
-					uniq([...ingredients, newChip]),
+					uniq([...ingredients, newChip.toLowerCase()]),
 				);
 			}
 		},

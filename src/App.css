@@ -1,6 +1,33 @@
+@font-face {
+	font-family: lemon-milk;
+	font-weight: normal;
+	src: url(./assets/font/LemonMilkMedium-mLZYV.otf);
+}
+
+@font-face {
+	font-family: lemon-milk;
+	font-weight: bold;
+	src: url(./assets/font/LemonMilkBold-gx2B3.otf);
+}
+
+@font-face {
+	font-family: lemon-milk;
+	font-weight: normal;
+	font-style: italic;
+	src: url(./assets/font/LemonMilkMediumItalic-d95nl.otf);
+}
+
+@font-face {
+	font-family: lemon-milk;
+	font-weight: bold;
+	font-style: italic;
+	src: url(./assets/font/LemonMilkBoldItalic-PKZ3P.otf);
+}
+
 body {
 	background-image: url(./assets/seamless-3047729.jpg);
 	background-size: cover;
+	font-family: lemon-milk, Helvetica, Arial, sans-serif;
 }
 
 h2 {

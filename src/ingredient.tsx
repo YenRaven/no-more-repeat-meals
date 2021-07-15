@@ -85,6 +85,8 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 					<MenuItem value="cm">cm</MenuItem>
 					<MenuItem value="m">m</MenuItem>
 					<MenuItem value="in">inch</MenuItem>
+					<MenuItem value="package">package</MenuItem>
+					<MenuItem value="stalk">stalk</MenuItem>
 				</Select>
 			</FormControl>
 		</Grid>
