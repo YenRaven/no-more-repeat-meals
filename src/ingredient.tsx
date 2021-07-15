@@ -33,19 +33,18 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 
 	const foodInput = useRef<HTMLInputElement>(null);
 	const amountInput = useRef<HTMLInputElement>(null);
-	const measurementInput = useRef<HTMLSelectElement>(null);
 
 	const previousProps = useRef<IngredientProps>({});
 
 	useEffect(() => {
-		if (food != previousProps.current?.food) {
+		if (food !== previousProps.current?.food) {
 			foodInput.current?.focus();
 			previousProps.current.food = food;
 		}
 	}, [food, foodInput]);
 
 	useEffect(() => {
-		if (amount != previousProps.current.amount) {
+		if (amount !== previousProps.current.amount) {
 			amountInput.current?.focus();
 			previousProps.current.amount = amount;
 		}
@@ -57,7 +56,7 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 				<TextField inputRef={foodInput} id="food" label="Ingredient" value={food} onChange={handleFoodChange} autoFocus />
 			</FormControl>
 		</Grid>
-		<Grid item xs={3}>
+		<Grid item xs={2}>
 			<FormControl className="amount-control">
 				<TextField inputRef={amountInput} id="amount" label="Quantity" value={amount} onChange={handleAmountChange} />
 			</FormControl>

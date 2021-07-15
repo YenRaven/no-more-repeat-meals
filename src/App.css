@@ -1,3 +1,7 @@
+h2 {
+	margin-bottom: 0em;
+}
+
 .App {
   display: flex;
   flex-direction: column;
@@ -67,6 +71,16 @@
 .amount-control,
 .measurement-control {
 	width: 100%;
+}
+
+.additional-ingredient {
+	margin: 5px;
+}
+
+.submit-button-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 

@@ -1,18 +1,22 @@
 import React, {useState} from 'react';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
+import {FormControlLabel, Checkbox, Grid, Fab} from '@material-ui/core';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import img1 from './title-images/food-576547.svg';
 import img2 from './title-images/food-576600.svg';
 import img3 from './title-images/food-576689.svg';
 import img4 from './title-images/pancakes-575795.svg';
 
-import './app.css';
 import {IngredientList} from './ingredient-list';
-
 import {IngredientProps} from './ingredient';
+import {AdditionalIngredientList} from './additional-ingredients-list';
 
+import './app.css';
 function App() {
 	const [ingredients, setIngredients] = useState<IngredientProps[]>([]);
+	const [additionalIngredients, setAdditionalIngredients] = useState<string[]>([]);
+	const [limitToProvided, setLimitToProvided] = useState(false);
 	return (
 		<Router>
 			<div className="App">
@@ -21,9 +25,41 @@ function App() {
 				</header>
 				<Switch>
 					<Route path="/get-started">
-						<IngredientList ingredients={ingredients} onChange={ingredients => {
-							setIngredients(ingredients);
-						}} />
+						<Grid className="ingredient-list" container spacing={3}>
+							<Grid item xs={12}>
+								<h2>I need to use these...</h2>
+							</Grid>
+							<IngredientList ingredients={ingredients} onChange={ingredients => {
+								setIngredients(ingredients);
+							}} />
+							<Grid item xs={12}>
+								<h2>I also have these I could use...</h2>
+							</Grid>
+							<AdditionalIngredientList ingredients={additionalIngredients} onChange={ingredients => {
+								setAdditionalIngredients(ingredients);
+							}} />
+							<Grid item xs={12}>
+								<FormControlLabel
+									label="Try and only use provided ingredients."
+									control={
+										<Checkbox
+											checked={limitToProvided}
+											onChange={event => {
+												setLimitToProvided(event.target.checked);
+											}}
+											name="limitToProvided"
+											color="primary"
+										/>
+									}
+								/>
+							</Grid>
+							<Grid className="submit-button-wrapper" item xs={12}>
+								<Fab variant="extended">
+									Go!
+									<NavigateNextIcon />
+								</Fab>
+							</Grid>
+						</Grid>
 					</Route>
 					<Route path="/">
 						<header className="App-header">
