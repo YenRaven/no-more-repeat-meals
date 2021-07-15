@@ -133,5 +133,5 @@ yarn-error.log*
 # project
 
 .husky
-.key
-.cert
+*.key
+*.cert
