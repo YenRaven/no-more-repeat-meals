@@ -22,7 +22,7 @@ function App() {
 		<Router>
 			<div className="App">
 				<header>
-					<h1>No More Repeat Meals!</h1>
+					<h1><i>No More</i> Repeat Meals!</h1>
 				</header>
 				<Switch>
 					<Route path="/get-started">

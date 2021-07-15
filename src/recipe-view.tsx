@@ -11,7 +11,7 @@ export const RecipeView = ({}) => <>
 	<Grid item xs={12}>
 		<h2>Pot Roast with Mashed Potatoes</h2>
 	</Grid>
-	<Grid className="recipe-row" item xs={12}>
+	<Grid className="recipe-row ingredients" item xs={12}>
 		<h3>Ingredients</h3>
 		<ul>
 			<li>3 pounds Beef Chuck</li>
@@ -25,7 +25,7 @@ export const RecipeView = ({}) => <>
 			<li>4 cups Mashed Potatoes</li>
 		</ul>
 	</Grid>
-	<Grid className="recipe-row" item xs={12}>
+	<Grid className="recipe-row instructions" item xs={12}>
 		<h3>Instructions</h3>
 		<ol>
 			<li>Season beef chuck with salt and black pepper; sear in a large, deep skillet or Dutch oven over medium heat until browned, about 10 minutes per side.</li>

@@ -6,15 +6,28 @@
 
 @font-face {
 	font-family: lemon-milk;
-	font-weight: bold;
-	src: url(./assets/font/LemonMilkBold-gx2B3.otf);
+	font-weight: normal;
+	font-style: italic;
+	src: url(./assets/font/LemonMilkMediumItalic-d95nl.otf);
 }
 
 @font-face {
 	font-family: lemon-milk;
-	font-weight: normal;
+	font-weight: lighter;
+	src: url(./assets/font/LemonMilkRegular-X3XE2.otf);
+}
+
+@font-face {
+	font-family: lemon-milk;
+	font-weight: lighter;
 	font-style: italic;
-	src: url(./assets/font/LemonMilkMediumItalic-d95nl.otf);
+	src: url(./assets/font/LemonMilkRegularItalic-L3AEy.otf);
+}
+
+@font-face {
+	font-family: lemon-milk;
+	font-weight: bold;
+	src: url(./assets/font/LemonMilkBold-gx2B3.otf);
 }
 
 @font-face {
@@ -26,7 +39,7 @@
 
 body {
 	background-image: url(./assets/seamless-3047729.jpg);
-	background-size: cover;
+	background-size: 100vw;
 	font-family: lemon-milk, Helvetica, Arial, sans-serif;
 }
 
@@ -42,6 +55,7 @@ h2 {
   color: #333;
   background-color: rgba(255, 255, 255, 0.9);
   padding-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .title-images-wrapper{
@@ -93,6 +107,10 @@ h2 {
   font-size: calc(10px + 2vmin);
 }
 
+header i {
+	font-weight: lighter;
+}
+
 .App-link {
   color: #005d77;
   text-decoration: none;
@@ -117,6 +135,15 @@ h2 {
 
 .recipe-row{
 	align-items: flex-start;
+}
+
+.recipe-row li {
+	font-weight: lighter;
+}
+
+.recipe-row.instructions li {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.2em;
 }
 
 .recipe-btn{
