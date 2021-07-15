@@ -11,9 +11,10 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   color: #333;
   background-color: rgba(255, 255, 255, 0.9);
+  padding-bottom: 20px;
 }
 
 .title-images-wrapper{
@@ -73,8 +74,14 @@ h2 {
 
 .food-control,
 .amount-control,
-.measurement-control {
+.measurement-control,
+.additional-ingredient-input {
 	width: 100%;
+}
+
+.MuiGrid-item{
+	display: flex;
+	align-items: center;
 }
 
 .additional-ingredient {

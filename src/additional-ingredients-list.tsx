@@ -1,5 +1,5 @@
 import React, {useCallback, useRef} from 'react';
-import {map, reject} from 'lodash';
+import {map, reject, uniq} from 'lodash';
 
 import Grid from '@material-ui/core/Grid';
 import {Fab, FormControl, TextField, Chip} from '@material-ui/core';
@@ -24,8 +24,12 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 		() => {
 			const newChip = addInputRef.current ? addInputRef.current?.value : '';
 			if (newChip !== '') {
+				if (addInputRef.current) {
+					addInputRef.current.value = '';
+				}
+
 				onChange(
-					[...ingredients, newChip],
+					uniq([...ingredients, newChip]),
 				);
 			}
 		},
@@ -37,12 +41,12 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 				handleDelete(index);
 			}} />)}
 		</Grid>
-		<Grid item xs={4}>
+		<Grid item xs={6}>
 			<FormControl className="additional-ingredient-input">
 				<TextField inputRef={addInputRef} id="additional-ingredient" label="Ingredient" />
 			</FormControl>
 		</Grid>
-		<Grid item xs={8}>
+		<Grid item xs={6}>
 			<Fab
 				onClick={() => {
 					handleAdd();
@@ -50,8 +54,9 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 				size="small"
 				color="secondary"
 				aria-label="add"
+				variant="extended"
 			>
-				<Add fontSize="small" />
+				<Add fontSize="small" /> Add
 			</Fab>
 		</Grid>
 	</>;

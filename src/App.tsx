@@ -40,7 +40,7 @@ function App() {
 							}} />
 							<Grid item xs={12}>
 								<FormControlLabel
-									label="Try and only use provided ingredients."
+									label="Try to use only my provided ingredients."
 									control={
 										<Checkbox
 											checked={limitToProvided}
