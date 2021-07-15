@@ -71,6 +71,10 @@ h2 {
 	max-width: calc(100vw - 100px);
 }
 
+.tagline {
+	text-align: center;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
 	.title-images {

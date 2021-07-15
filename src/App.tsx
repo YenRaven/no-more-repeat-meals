@@ -80,7 +80,7 @@ function App() {
 									<div className="title-image"><img src={img1} className="App-logo" alt="food" /></div>
 								</div>
 							</div>
-							<p>
+							<p className="tagline">
 								Reduce your carbon footprint and use up your leftovers with brand new recipes!
 							</p>
 							<Link className="App-link" to="/get-started">
