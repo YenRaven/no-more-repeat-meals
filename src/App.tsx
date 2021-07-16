@@ -66,7 +66,11 @@ function App() {
 					</Route>
 					<Route path="/recipe">
 						<Grid className="ingredient-list" container spacing={3}>
-							<RecipeView />
+							<RecipeView
+								ingredients={ingredients}
+								additionalIngredients={additionalIngredients}
+								limitToProvided={limitToProvided}
+							/>
 						</Grid>
 					</Route>
 					<Route path="/">
