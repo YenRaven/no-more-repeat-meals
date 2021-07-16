@@ -74,7 +74,7 @@ export const RecipeView = ({ingredients, additionalIngredients, limitToProvided}
 			&& <Grid className="recipe-row ingredients" item xs={12}>
 				<h3>Ingredients</h3>
 				<ul>
-					{recipeData.ingredients.map(ingredient => <li>{ingredient}</li>)}
+					{recipeData.ingredients.map((ingredient, index) => <li key={index}>{ingredient}</li>)}
 				</ul>
 			</Grid>
 		}
@@ -82,7 +82,7 @@ export const RecipeView = ({ingredients, additionalIngredients, limitToProvided}
 			&& <Grid className="recipe-row instructions" item xs={12}>
 				<h3>Instructions</h3>
 				<ol>
-					{recipeData.instructions.map(instruction => <li>{instruction}</li>)}
+					{recipeData.instructions.map((instruction, index) => <li key={index}>{instruction}</li>)}
 				</ol>
 			</Grid>
 		}

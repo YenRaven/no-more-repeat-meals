@@ -37,7 +37,7 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 	);
 	return <>
 		<Grid item xs={12}>
-			{map(ingredients, (ingredient, index) => <Chip className="additional-ingredient" label={ingredient} onDelete={() => {
+			{map(ingredients, (ingredient, index) => <Chip key={ingredient} className="additional-ingredient" label={ingredient} onDelete={() => {
 				handleDelete(index);
 			}} />)}
 		</Grid>

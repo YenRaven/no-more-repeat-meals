@@ -43,7 +43,7 @@ export const IngredientList = ({ingredients, onChange}: Props) => {
 					},
 				}),
 			),
-			(ingredient, index) => <>
+			(ingredient, index) => <React.Fragment key={index}>
 				<Ingredient key={index} {...ingredient} />
 				<Grid item xs={2} sm={1}>
 					<FormControl>
@@ -59,7 +59,7 @@ export const IngredientList = ({ingredients, onChange}: Props) => {
 						</Fab>
 					</FormControl>
 				</Grid>
-			</>,
+			</React.Fragment>,
 		)}
 		<Ingredient key={ingredients.length} onChange={ingredient => {
 			handleChange(ingredient, ingredients.length);
