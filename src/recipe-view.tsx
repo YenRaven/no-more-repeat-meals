@@ -1,5 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {map, reject, uniq} from 'lodash';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import {Backdrop, CircularProgress, Fab, makeStyles} from '@material-ui/core';
