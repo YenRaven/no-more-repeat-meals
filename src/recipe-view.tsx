@@ -5,6 +5,7 @@ import {Backdrop, CircularProgress, Fab, makeStyles} from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import {Link} from 'react-router-dom';
+import {isEmpty} from 'lodash';
 import {IngredientProps} from './ingredient';
 
 interface Props {
@@ -69,18 +70,22 @@ export const RecipeView = ({ingredients, additionalIngredients, limitToProvided}
 		<Grid item xs={12}>
 			<h2>{recipeData.title}</h2>
 		</Grid>
-		<Grid className="recipe-row ingredients" item xs={12}>
-			<h3>Ingredients</h3>
-			<ul>
-				{recipeData.ingredients.map(ingredient => <li>{ingredient}</li>)}
-			</ul>
-		</Grid>
-		<Grid className="recipe-row instructions" item xs={12}>
-			<h3>Instructions</h3>
-			<ol>
-				{recipeData.instructions.map(instruction => <li>{instruction}</li>)}
-			</ol>
-		</Grid>
+		{!isEmpty(recipeData.ingredients)
+			&& <Grid className="recipe-row ingredients" item xs={12}>
+				<h3>Ingredients</h3>
+				<ul>
+					{recipeData.ingredients.map(ingredient => <li>{ingredient}</li>)}
+				</ul>
+			</Grid>
+		}
+		{!isEmpty(recipeData.instructions)
+			&& <Grid className="recipe-row instructions" item xs={12}>
+				<h3>Instructions</h3>
+				<ol>
+					{recipeData.instructions.map(instruction => <li>{instruction}</li>)}
+				</ol>
+			</Grid>
+		}
 		<Grid className="recipe-btn" item xs={6}>
 			<Link className="App-link" to="/get-started">
 				<Fab variant="extended"><NavigateBeforeIcon fontSize="small"/> Back</Fab>
