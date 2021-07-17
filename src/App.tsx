@@ -14,6 +14,8 @@ import {AdditionalIngredientList} from './additional-ingredients-list';
 
 import './app.css';
 import {RecipeView} from './recipe-view';
+import {Faq} from './faq';
+import {Donate} from './donate';
 function App() {
 	const [ingredients, setIngredients] = useState<IngredientProps[]>([]);
 	const [additionalIngredients, setAdditionalIngredients] = useState<string[]>([]);
@@ -73,6 +75,8 @@ function App() {
 							/>
 						</Grid>
 					</Route>
+					<Route path="/faq" component={Faq} />
+					<Route path="/donate" component={Donate} />
 					<Route path="/">
 						<header className="App-header">
 							<div className="title-images-wrapper">
@@ -96,6 +100,7 @@ function App() {
 						</header>
 					</Route>
 				</Switch>
+				<div className="footer"><Link to="/get-started">Get Started</Link> - <Link to="/faq">FAQ</Link> - <Link to="/donate">Donate</Link></div>
 				<div className="disclaimer">Your access and use of this services is at your own risk. By continuing to use this site, you agree that services are provided to you on an "AS IS" and "AS AVAILABLE" basis. The site owner provides no warranty and disclaims all responsibility and liability for any damages that may result from access or use of the services provided or any content. Consuming raw or undercooked meats, poultry, seafood, shellfish, or eggs may increase your risk of foodborne illness, especially if you have certain medical conditions.</div>
 			</div>
 		</Router>

@@ -40,6 +40,10 @@
 body {
 	background-image: url(./assets/seamless-3047729.jpg);
 	background-size: 100vw;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
 	font-family: lemon-milk, Helvetica, Arial, sans-serif;
 }
 
@@ -173,6 +177,10 @@ header i {
 	font-size: 8px;
 }
 
+.footer {
+	margin: 40px 0 10px 0;
+	font-size: 0.6em;
+}
 
 @keyframes title-image-slide {
 	0%{
