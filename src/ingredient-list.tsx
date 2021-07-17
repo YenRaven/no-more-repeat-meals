@@ -33,7 +33,7 @@ export const IngredientList = ({ingredients, onChange}: Props) => {
 		[ingredients, onChange],
 	);
 	return <>
-		{map(
+		{[...map(
 			map(
 				ingredients,
 				(ingredient, index) => ({
@@ -60,9 +60,17 @@ export const IngredientList = ({ingredients, onChange}: Props) => {
 					</FormControl>
 				</Grid>
 			</React.Fragment>,
-		)}
-		<Ingredient key={ingredients.length} onChange={ingredient => {
-			handleChange(ingredient, ingredients.length);
-		}} />
+		),
+		<React.Fragment key={ingredients.length}>
+			<Ingredient
+				key={ingredients.length}
+				onChange={ingredient => {
+					handleChange(ingredient, ingredients.length);
+				}}
+				food=""
+				amount=""
+				measurement=""
+			/>
+		</React.Fragment>]}
 	</>;
 };

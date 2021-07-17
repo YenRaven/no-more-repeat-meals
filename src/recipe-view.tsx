@@ -29,7 +29,7 @@ export const RecipeView = ({ingredients, additionalIngredients, limitToProvided}
 	});
 	const getRecipe = useCallback(() => {
 		setLoading(true);
-		fetch('/api/request-recipe-test', {
+		fetch('/api/request-recipe', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

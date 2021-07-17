@@ -168,6 +168,11 @@ header i {
 	justify-content: center;
 }
 
+.disclaimer {
+	padding: 20px 10px;
+	font-size: 8px;
+}
+
 
 @keyframes title-image-slide {
 	0%{

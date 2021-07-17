@@ -1,14 +1,15 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {TextField, Select, MenuItem} from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 
 export interface IngredientProps {
-	food?: string;
-	amount?: string;
-	measurement?: string;
+	food: string;
+	amount: string;
+	measurement: string;
 }
 
 type Props = IngredientProps & {
@@ -16,9 +17,41 @@ type Props = IngredientProps & {
 };
 
 export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
+	const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
+	const [autocompleteLimiter, setAutocompleteLimiter] = useState<number>();
 	const handleFoodChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-		onChange({food: event.target.value, amount, measurement});
-	}, [amount, measurement, onChange]);
+		const food = event.target.value;
+		onChange({food, amount, measurement});
+		if (food.length >= 3) {
+			if (autocompleteLimiter !== undefined) {
+				clearTimeout(autocompleteLimiter);
+			}
+
+			setAutocompleteLimiter(
+				window.setTimeout(() => {
+					fetch('/api/ingredient-autocomplete', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(
+							{
+								input: food,
+							},
+						),
+					})
+						.then(async response => response.json())
+						.then((response: {autocompleteOpts: string[]}) => {
+							setAutocompleteOptions(response?.autocompleteOpts);
+							setAutocompleteLimiter(undefined);
+						})
+						.catch(error => {
+							console.error(error);
+						});
+				}, 1000),
+			);
+		}
+	}, [amount, measurement, onChange, autocompleteLimiter]);
 	const handleAmountChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^\d*\s?\d*\/?\.?\d*$/.test(event.target.value)) {
 			onChange({food, amount: event.target.value, measurement});
@@ -34,7 +67,11 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 	const foodInput = useRef<HTMLInputElement>(null);
 	const amountInput = useRef<HTMLInputElement>(null);
 
-	const previousProps = useRef<IngredientProps>({});
+	const previousProps = useRef<IngredientProps>({
+		food: '',
+		amount: '',
+		measurement: '',
+	});
 
 	useEffect(() => {
 		if (food !== previousProps.current?.food) {
@@ -53,7 +90,17 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 	return <>
 		<Grid item xs={12} sm={6} >
 			<FormControl className="food-control">
-				<TextField inputRef={foodInput} className="food" label="Ingredient" value={food} onChange={handleFoodChange} autoFocus />
+				<Autocomplete
+					freeSolo
+					options={autocompleteOptions}
+					filterOptions={options => options}
+					inputValue={food}
+					renderInput={
+						parameters => (
+							<TextField {...parameters} inputRef={foodInput} className="food" label="Ingredient" value={food} onChange={handleFoodChange} autoFocus />
+						)
+					}
+				/>
 			</FormControl>
 		</Grid>
 		<Grid item xs={6} sm={2}>
@@ -66,6 +113,11 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 				<InputLabel className="measurement-label">Unit</InputLabel>
 				<Select className="measurement" labelId="measurement-label" value={measurement ?? ''} onChange={handleMeasurementChange}>
 					<MenuItem value="whole">whole</MenuItem>
+					<MenuItem value="large">large</MenuItem>
+					<MenuItem value="medium">medium</MenuItem>
+					<MenuItem value="small">small</MenuItem>
+					<MenuItem value="package">package</MenuItem>
+					<MenuItem value="stalk">stalk</MenuItem>
 					<MenuItem value="oz">oz</MenuItem>
 					<MenuItem value="fl oz">fl oz</MenuItem>
 					<MenuItem value="lb">lb</MenuItem>
@@ -85,8 +137,6 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 					<MenuItem value="cm">cm</MenuItem>
 					<MenuItem value="m">m</MenuItem>
 					<MenuItem value="in">inch</MenuItem>
-					<MenuItem value="package">package</MenuItem>
-					<MenuItem value="stalk">stalk</MenuItem>
 				</Select>
 			</FormControl>
 		</Grid>

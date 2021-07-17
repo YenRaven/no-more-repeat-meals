@@ -1,9 +1,10 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {map, reject, uniq} from 'lodash';
 
 import Grid from '@material-ui/core/Grid';
 import {Fab, FormControl, TextField, Chip} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 interface Props {
 	ingredients: string[];
@@ -11,6 +12,9 @@ interface Props {
 }
 
 export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
+	const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
+	const [autocompleteLimiter, setAutocompleteLimiter] = useState<number>();
+	const [additionalIngredientValue, setAdditionalIngredientValue] = useState<string>('');
 	const addInputRef = useRef<HTMLInputElement>(null);
 	const handleDelete = useCallback(
 		index => {
@@ -24,9 +28,7 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 		() => {
 			const newChip = addInputRef.current ? addInputRef.current?.value : '';
 			if (newChip !== '') {
-				if (addInputRef.current) {
-					addInputRef.current.value = '';
-				}
+				setAdditionalIngredientValue('');
 
 				onChange(
 					uniq([...ingredients, newChip.toLowerCase()]),
@@ -35,6 +37,43 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 		},
 		[ingredients, onChange],
 	);
+	const handleAutoComplete = useCallback(
+		(event: React.ChangeEvent<HTMLInputElement>) => {
+			const food = event.target.value;
+			setAdditionalIngredientValue(food);
+			if (food.length >= 3) {
+				if (autocompleteLimiter !== undefined) {
+					clearTimeout(autocompleteLimiter);
+				}
+
+				setAutocompleteLimiter(
+					window.setTimeout(() => {
+						fetch('/api/ingredient-autocomplete', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(
+								{
+									input: food,
+								},
+							),
+						})
+							.then(async response => response.json())
+							.then((response: {autocompleteOpts: string[]}) => {
+								setAutocompleteOptions(response?.autocompleteOpts);
+								setAutocompleteLimiter(undefined);
+							})
+							.catch(error => {
+								console.error(error);
+							});
+					}, 1000),
+				);
+			}
+		},
+		[autocompleteLimiter, setAutocompleteLimiter, setAutocompleteOptions, setAdditionalIngredientValue],
+	);
+
 	return <>
 		<Grid item xs={12}>
 			{map(ingredients, (ingredient, index) => <Chip key={ingredient} className="additional-ingredient" label={ingredient} onDelete={() => {
@@ -43,7 +82,13 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 		</Grid>
 		<Grid item xs={6}>
 			<FormControl className="additional-ingredient-input">
-				<TextField inputRef={addInputRef} id="additional-ingredient" label="Ingredient" />
+				<Autocomplete
+					key={ingredients.length}
+					filterOptions={options => options}
+					freeSolo
+					options={autocompleteOptions}
+					renderInput={parameters => <TextField {...parameters} inputRef={addInputRef} id="additional-ingredient" label="Ingredient" value={additionalIngredientValue} onChange={handleAutoComplete} />}
+				/>
 			</FormControl>
 		</Grid>
 		<Grid item xs={6}>
