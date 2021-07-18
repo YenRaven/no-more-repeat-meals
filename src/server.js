@@ -166,36 +166,44 @@ app.use('/api/request-recipe', (creq, cres) => {
 		});
 	console.log('Getting data from request body...', creq.body);
 	const {ingredients, additionalIngredients, limitToProvided} = creq.body;
-	const prompt = `I will find or invent recipes that must use all of the ingredients in the "I MUST USE ALL OF THESE INGREDIENTS:" list and optionally use a few additional ingredients that compliment the ingredients I must use from the "I ALSO HAVE THESE INGREDIENTS I COULD USE:" list with the goal of creating a recipe that serves "SERVES:" people. If I specify that I must "LIMIT RECIPES TO ONLY USE THE INGREDIENTS I HAVE", I will limit the recipe to only use the ingredients I have provided otherwise if I specify that I can "USE OTHER INGREDIENTS IN RECIPE", I can include other ingredients that were not provided. I will output a series of instruction steps for my created recipe in "RECIPE INSTRUCTIONS:" lists. I will build a "RECIPE INGREDIENTS:" list from only the ingredients used in the instruction steps. I will output a creative title for the recipe in the "RECIPE TITLE:" value.
+	const prompt = `Create a recipe to use up the provided soon to spoil ingredients.
 """
-I MUST USE ALL OF THESE INGREDIENTS: 2 lb potatoes, 1 stalk celery, 1 whole carrot
-I ALSO HAVE THESE INGREDIENTS I COULD USE: ground chuck, onion, water
-USE OTHER INGREDIENTS IN RECIPE
-SERVES: 8
+the recipe must use 6 oz leftover goulash, 1 medium leftover pork chop, 6 oz leftover enchilada, 1 cup leftover pinto beans
+the recipe can optionally use water
+the recipe can use other ingredients.
+the recipe should serve 4 people.
 --BEGIN RECIPE--
 RECIPE INSTRUCTIONS:
-1. Bring a large pot of salted water to a boil. Add potatoes and cook until tender but still firm, about 15 minutes. Drain, cool and chop.
-2. In a large bowl, combine the potatoes, mayonnaise, minced pickle, sugar, onion, mustard, vinegar, celery, pimentos, carrot, parsley, pepper and salt. Mix well, chill and serve.
+1. Pulse leftover goulash, pork chop, and leftover enchilada in a food processor until chunky.
+2. Add chopped onion, chopped garlic, chopped red pepper, red pepper flakes, cumin and combine in mixture.
+3. In a 9 x 13 inch pan, lightly coat in non stick spray and layer corn chips on the bottom.
+4. Add a layer of leftover pinto beans, followed by the combined mixture, and cover with salsa.
+5. Bake covered for 45 minuets until heated through.
+6. Cover with corn chips and shredded cheddar cheese.  Bake uncovered for 10 minuets.
+7. Top with lettuce, tomato, avocado, and sour cream to taste and serve.
 RECIPE INGREDIENTS:
-1. 2 pounds of potatoes
-2. 1 cup mayonnaise
-3. 4 teaspoons diced pickle
-4. 4 teaspoons white sugar
-5. 2 teaspoons chopped white onion
-6. 2 teaspoons prepared mustard
-7. 1 teaspoon white wine vinegar
-8. 1 stalk minced celery
-9. 1 teaspoon minced pimento
-10. 1 shredded carrot
-11. 1/4 teaspoon dried parsley
-12. 1/4 teaspoon ground black pepper
-13. salt to taste
-RECIPE TITLE: Potato Salad
+1. 6 oz leftover goulash
+2. 1 medium leftover pork chop
+3. 6 oz leftover enchilada
+4. 1/2 small onion chopped
+5. 1/2 small red bell pepper chopped
+6. 2 whole cloves garlic chopped
+7. 1/2 tsp red pepper flakes
+8. 1/2 tsp cumin
+9. 1/2 package corn chips
+10. 1 cup leftover pinto beans
+11. 1/2 cup salsa
+12. 8 oz shredded cheddar cheese
+13. 1/4 whole head lettuce
+14. 1 whole tomato chopped
+15. 1 whole avocado chopped
+16. 1/2 cup sour cream
+RECIPE TITLE: Leftover goulash enchilada casserole
 """
-I MUST USE ALL OF THESE INGREDIENTS: 4 cups mashed potatoes, 1/2 package carrots
-I ALSO HAVE THESE INGREDIENTS I COULD USE: milk, eggs, flour, beef chuck, mustard, catsup, salt, ground black pepper, vodka, beef broth, white onion, garlic cloves, fresh rosemary, chicken, hamburger, water
-LIMIT RECIPE TO ONLY USE INGREDIENTS I HAVE
-SERVES: 4
+the recipe must use 4 cups mashed potatoes, 1/2 package carrots
+the recipe can optionally use milk, eggs, flour, beef chuck, mustard, catsup, salt, ground black pepper, vodka, beef broth, white onion, garlic cloves, fresh rosemary, chicken, hamburger, water
+the recipe can only use these provided ingredients.
+the recipe should serve 4 people.
 --BEGIN RECIPE--
 RECIPE INSTRUCTIONS:
 1. Season beef chuck with salt and black pepper; sear in a large, deep skillet or Dutch oven over medium heat until browned, about 10 minutes per side.
@@ -214,10 +222,54 @@ RECIPE INGREDIENTS:
 9. 4 cups mashed potatoes
 RECIPE TITLE: Pot Roast with Mashed Potatoes
 """
-I MUST USE ALL OF THESE INGREDIENTS: ${ingredients.map(({food, amount, unit}) => `${amount} ${unit} ${food}`).join(', ')}
-I ALSO HAVE THESE INGREDIENTS I COULD USE: ${additionalIngredients.join(', ')}, Water
-${limitToProvided ? 'LIMIT RECIPE TO ONLY USE INGREDIENTS I HAVE' : 'USE OTHER INGREDIENTS IN RECIPE'}
-SERVES: 2`;
+the recipe must use 1 whole leftover chicken breast, 4 oz corn
+the recipe can optionally use salt, ground black pepper, flour, milk, eggs, cucumber, paprika, cumin, cinnamon, garlic powder, onion powder, celery, chicken broth, water
+the recipe can only use these provided ingredients.
+the recipe should serve 2 people.
+--BEGIN RECIPE--
+RECIPE INSTRUCTIONS:
+1. Preheat oven to 350 degrees F (175 degrees C).
+2. Combine flour, salt, pepper, and paprika in a bowl.
+3. Dip chicken in milk, then dredge in flour mixture.
+4. Heat oil in a skillet over medium heat. Add chicken and cook until browned on both sides.
+5. Place chicken in a baking dish and bake for 30 minutes.
+6. While chicken is baking, combine corn, onion, celery, and garlic in a saucepan. Add chicken broth and cook until vegetables are tender.
+7. Add corn mixture to chicken and bake for an additional 10 minutes.
+RECIPE INGREDIENTS:
+1. 1 whole leftover chicken breast
+2. 1/4 cup flour
+3. 1/4 teaspoon salt
+4. 1/4 teaspoon ground black pepper
+5. 1/2 teaspoon paprika
+6. 1/2 cup milk
+7. 1/2 cup vegetable oil
+8. 1/2 cup corn
+9. 1/4 small onion chopped
+10. 2 cloves garlic
+11. 1/2 cup celery chopped
+12. 1/2 cup chicken broth
+RECIPE TITLE: Chicken with Corn and Vegetables
+"""
+the recipe must use 3 medium peaches
+the recipe can optionally use water
+the recipe can use other ingredients.
+the recipe should serve 1 people.
+--BEGIN RECIPE--
+RECIPE INSTRUCTIONS:
+1. Place peaches in a saucepan and cover with water. Bring to a boil, reduce heat, and simmer for 5 minutes.
+2. Remove peaches from water and place in a blender or food processor. Add sugar and blend until smooth.
+3. Pour peach puree into a bowl and add lemon juice. Stir until combined.
+4. Pour peach mixture into popsicle molds and freeze for at least 4 hours before serving.
+RECIPE INGREDIENTS:
+1. 3 medium peaches
+2. 1/4 cup sugar
+3. 1/2 teaspoon lemon juice
+RECIPE TITLE: Peach Popsicles
+"""
+the recipe must use ${ingredients.map(({food, amount, unit}) => `${amount} ${unit} ${food}`).join(', ')}
+the recipe can optionally use ${additionalIngredients.join(', ')}
+${limitToProvided ? 'the recipe can only use these provided ingredients.' : 'the recipe can use other ingredients.'}
+the recipe should serve 2 people.`;
 	console.log('writing request to openAI api.');
 	preq.write(JSON.stringify({
 		prompt,
