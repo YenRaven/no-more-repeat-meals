@@ -266,7 +266,7 @@ RECIPE INGREDIENTS:
 3. 1/2 teaspoon lemon juice
 RECIPE TITLE: Peach Popsicles
 """
-the recipe must use ${ingredients.map(({food, amount, unit}) => `${amount} ${unit} ${food}`).join(', ')}
+the recipe must use ${ingredients.map(({food, amount, measurement}) => `${amount} ${measurement} ${food}`).join(', ')}
 the recipe can optionally use ${additionalIngredients.join(', ')}
 ${limitToProvided ? 'the recipe can only use these provided ingredients.' : 'the recipe can use other ingredients.'}
 the recipe should serve 2 people.`;
