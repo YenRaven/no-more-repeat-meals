@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid} from '@material-ui/core';
 import bitcoin from './assets/bitcoin.svg';
+import btcAddr from './assets/nomorerepeatmeals-btc.png';
 
 export const Donate = () => <Grid className="ingredient-list" container spacing={3}>
 	<Grid item xs={12}><h2>Thank you for considering supporting our porjects!</h2></Grid>
@@ -49,6 +50,6 @@ export const Donate = () => <Grid className="ingredient-list" container spacing=
 			</svg>&nbsp; Become a Patron!
 		</a>
 	</Grid>
-	<Grid item xs={6}><img src={bitcoin} /></Grid>
+	<Grid className="btc-addr" item xs={6}><img src={bitcoin} /><img src={btcAddr} /></Grid>
 	<Grid item xs={6}>More options coming soon!</Grid>
 </Grid>;

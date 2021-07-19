@@ -191,6 +191,10 @@ header i {
 	font-size: 0.6em;
 }
 
+.btc-addr img {
+	height: 8em;
+}
+
 @keyframes title-image-slide {
 	0%{
 		transform: translateX(-80%);

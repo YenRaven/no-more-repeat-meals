@@ -138,9 +138,9 @@ app.use('/api/request-recipe', (creq, cres) => {
 	const preq = https
 		.request(options, pres => {
 			// Set encoding
-			const title = RegExp('(?<=RECIPE TITLE:\\s+).+$', 'm');
-			const ingredients = RegExp('(?<=RECIPE INGREDIENTS:\\s+)(\\s*\\d\\. .+)+', 'm');
-			const instructions = RegExp('(?<=RECIPE INSTRUCTIONS:\\s+)(\\s*\\d\\. .+)+', 'm');
+			const title = RegExp('(?<=TITLE:\\s+).+$', 'm');
+			const ingredients = RegExp('(?<=INGREDIENTS:\\s+)(\\s*\\d\\. .+)+', 'm');
+			const instructions = RegExp('(?<=INSTRUCTIONS:\\s+)(\\s*\\d\\. .+)+', 'm');
 			const listItem = RegExp('(?<=\\d\\. ).+', 'g');
 			pres.on('data', (d) => {
 				const presBody = d.toString();
@@ -170,10 +170,10 @@ app.use('/api/request-recipe', (creq, cres) => {
 	const prompt = `Create a recipe that serves 4 people that uses up 6 oz leftover goulash, 1 medium leftover pork chop, 6 oz leftover enchilada, and 1 cup leftover pinto beans, that optionally includes water, garlic, and red pepper, and that can include other ingredients.
 
 --BEGIN RECIPE--
-RECIPE TITLE:
+TITLE:
 Leftover goulash enchilada casserole
 
-RECIPE INGREDIENTS:
+INGREDIENTS:
 1. 6 oz leftover goulash
 2. 1 medium leftover pork chop
 3. 6 oz leftover enchilada
@@ -191,7 +191,7 @@ RECIPE INGREDIENTS:
 15. 1 whole avocado chopped
 16. 1/2 cup sour cream
 
-RECIPE INSTRUCTIONS:
+INSTRUCTIONS:
 1. Pulse leftover goulash, pork chop, and leftover enchilada in a food processor until chunky.
 2. Add chopped onion, chopped garlic, chopped red pepper, red pepper flakes, cumin and combine in mixture.
 3. In a 9 x 13 inch pan, lightly coat in non stick spray and layer corn chips on the bottom.
