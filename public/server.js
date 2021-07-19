@@ -217,6 +217,10 @@ Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ing
 
 app.use(express.static('build'));
 
+app.use('/', (req, res) => {
+	res.sendFile(path.join(__dirname,'./index.html'));
+});
+
 // const privateKey = fs.readFileSync(path.join(__dirname, 'server.key'), 'utf8');
 // const certificate = fs.readFileSync(path.join(__dirname, 'server.cert'), 'utf8');
 
