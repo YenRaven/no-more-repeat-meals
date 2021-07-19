@@ -50,6 +50,6 @@ export const Donate = () => <Grid className="ingredient-list" container spacing=
 			</svg>&nbsp; Become a Patron!
 		</a>
 	</Grid>
-	<Grid className="btc-addr" item xs={6}><img src={bitcoin} /><img src={btcAddr} /></Grid>
+	<Grid className="btc-addr" item xs={6}><img src={bitcoin} alt="bitcoin"/><img src={btcAddr} alt="bitcoin address"/></Grid>
 	<Grid item xs={6}>More options coming soon!</Grid>
 </Grid>;
