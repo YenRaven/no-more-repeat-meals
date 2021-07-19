@@ -21,39 +21,42 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 	const [autocompleteLimiter, setAutocompleteLimiter] = useState<number>();
 	const handleFoodChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		const food = event.target.value;
-		onChange({food, amount, measurement});
-		if (food.length >= 3) {
-			if (autocompleteLimiter !== undefined) {
-				clearTimeout(autocompleteLimiter);
-			}
+		if (food.length <= 200) {
+			onChange({food, amount, measurement});
 
-			setAutocompleteLimiter(
-				window.setTimeout(() => {
-					fetch('/api/ingredient-autocomplete', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(
-							{
-								input: food,
+			if (food.length >= 3) {
+				if (autocompleteLimiter !== undefined) {
+					clearTimeout(autocompleteLimiter);
+				}
+
+				setAutocompleteLimiter(
+					window.setTimeout(() => {
+						fetch('/api/ingredient-autocomplete', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
 							},
-						),
-					})
-						.then(async response => response.json())
-						.then((response: {autocompleteOpts: string[]}) => {
-							setAutocompleteOptions(response?.autocompleteOpts);
-							setAutocompleteLimiter(undefined);
+							body: JSON.stringify(
+								{
+									input: food,
+								},
+							),
 						})
-						.catch(error => {
-							console.error(error);
-						});
-				}, 1000),
-			);
+							.then(async response => response.json())
+							.then((response: {autocompleteOpts: string[]}) => {
+								setAutocompleteOptions(response?.autocompleteOpts);
+								setAutocompleteLimiter(undefined);
+							})
+							.catch(error => {
+								console.error(error);
+							});
+					}, 1000),
+				);
+			}
 		}
 	}, [amount, measurement, onChange, autocompleteLimiter]);
 	const handleAmountChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-		if (/^\d*\s?\d*\/?\.?\d*$/.test(event.target.value)) {
+		if (/^\d*\s?\d*\/?\.?\d*$/.test(event.target.value) && event.target.value.length <= 10) {
 			onChange({food, amount: event.target.value, measurement});
 		}
 	}, [food, measurement, onChange]);

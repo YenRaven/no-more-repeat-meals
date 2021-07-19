@@ -40,35 +40,37 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 	const handleAutoComplete = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			const food = event.target.value;
-			setAdditionalIngredientValue(food);
-			if (food.length >= 3) {
-				if (autocompleteLimiter !== undefined) {
-					clearTimeout(autocompleteLimiter);
-				}
+			if (food.length <= 200) {
+				setAdditionalIngredientValue(food);
+				if (food.length >= 3) {
+					if (autocompleteLimiter !== undefined) {
+						clearTimeout(autocompleteLimiter);
+					}
 
-				setAutocompleteLimiter(
-					window.setTimeout(() => {
-						fetch('/api/ingredient-autocomplete', {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(
-								{
-									input: food,
+					setAutocompleteLimiter(
+						window.setTimeout(() => {
+							fetch('/api/ingredient-autocomplete', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
 								},
-							),
-						})
-							.then(async response => response.json())
-							.then((response: {autocompleteOpts: string[]}) => {
-								setAutocompleteOptions(response?.autocompleteOpts);
-								setAutocompleteLimiter(undefined);
+								body: JSON.stringify(
+									{
+										input: food,
+									},
+								),
 							})
-							.catch(error => {
-								console.error(error);
-							});
-					}, 1000),
-				);
+								.then(async response => response.json())
+								.then((response: {autocompleteOpts: string[]}) => {
+									setAutocompleteOptions(response?.autocompleteOpts);
+									setAutocompleteLimiter(undefined);
+								})
+								.catch(error => {
+									console.error(error);
+								});
+						}, 1000),
+					);
+				}
 			}
 		},
 		[autocompleteLimiter, setAutocompleteLimiter, setAutocompleteOptions, setAdditionalIngredientValue],

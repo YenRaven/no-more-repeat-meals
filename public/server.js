@@ -92,7 +92,8 @@ app.use('/api/ingredient-autocomplete', (creq, cres) => {
 		});
 	console.log('Getting data from request body...', creq.body);
 	const {input} = creq.body;
-	const prompt = `Input: ham
+	if(input.length<=200){
+		const prompt = `Input: ham
 Autocomplete ingredient options: hamburger, ham steak, ham cubes, spiral cut ham, diced ham, baked ham, virginia ham, honey ham, ham lunchmeat
 Input: beef
 Autocomplete ingredient options: beef fillet, beef steak, beef cubes, beef lunchmeat
@@ -104,17 +105,20 @@ Input: bro
 Autocomplete ingredient options: broth, broccoli, brussels sprouts, bruschetta, brie
 Input: ${input.toLowerCase()}
 Autocomplete ingredient options:`;
-	console.log('writing request to openAI api.', prompt);
-	preq.write(JSON.stringify({
-		prompt,
-		"temperature": 0,
-		"max_tokens": 20,
-		"top_p": 0.7,
-		"frequency_penalty": 0.3,
-		"presence_penalty": 0.05,
-		"stop": ["\n"]
-	}));
-	creq.pipe(preq, {end: true});
+		console.log('writing request to openAI api.', prompt);
+		preq.write(JSON.stringify({
+			prompt,
+			"temperature": 0,
+			"max_tokens": 20,
+			"top_p": 0.7,
+			"frequency_penalty": 0.3,
+			"presence_penalty": 0.05,
+			"stop": ["\n"]
+		}));
+		creq.pipe(preq, {end: true});
+	}else{
+		console.log('Request rejected due to length.')
+	}
 });
 
 app.use('/api/request-recipe', (creq, cres) => {
@@ -202,17 +206,21 @@ INSTRUCTIONS:
 
 """
 Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ingredients.map(({food, amount, measurement}) => `${amount} ${measurement} ${food}`))}, that optionally includes ${ingredientsArrayToPrompt(additionalIngredients)}, and ${limitToProvided ? 'that can only use these ingredients.' : 'that can use other ingredients.'}`;
-	console.log('writing request to openAI api.', prompt);
-	preq.write(JSON.stringify({
-		prompt,
-		temperature: 0.5,
-		max_tokens: 500,
-		top_p: 1,
-		frequency_penalty: 0,
-		presence_penalty: 0,
-		stop: ['\n"""'],
-	}));
-	creq.pipe(preq, {end: true});
+	if(prompt.length <= 4000){
+		console.log('writing request to openAI api.', prompt);
+		preq.write(JSON.stringify({
+			prompt,
+			temperature: 0.5,
+			max_tokens: 500,
+			top_p: 1,
+			frequency_penalty: 0,
+			presence_penalty: 0,
+			stop: ['\n"""'],
+		}));
+		creq.pipe(preq, {end: true});
+	}else{
+		console.log('rejected prompt too long.');
+	}
 });
 
 app.use(express.static('build'));
