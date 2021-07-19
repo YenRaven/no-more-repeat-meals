@@ -88,7 +88,7 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 	}, [amount, amountInput]);
 
 	return <>
-		<Grid item xs={12} sm={6} >
+		<Grid item xs={12} sm={5} >
 			<FormControl className="food-control">
 				<Autocomplete
 					freeSolo

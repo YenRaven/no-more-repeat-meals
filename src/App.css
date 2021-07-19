@@ -130,6 +130,15 @@ header i {
 	flex: 0 0;
 	width: 100%;
 	max-width: 600px;
+
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5em;
+    padding: 0.5em;
+}
+
+.delete-btn {
+	justify-content: center;
 }
 
 .food-control,

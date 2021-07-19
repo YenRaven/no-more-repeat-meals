@@ -45,7 +45,7 @@ export const IngredientList = ({ingredients, onChange}: Props) => {
 			),
 			(ingredient, index) => <React.Fragment key={index}>
 				<Ingredient key={index} {...ingredient} />
-				<Grid item xs={2} sm={1}>
+				<Grid item xs={2} sm={2} className="delete-btn">
 					<FormControl>
 						<Fab
 							onClick={() => {
