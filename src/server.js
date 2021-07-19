@@ -148,9 +148,9 @@ app.use('/api/request-recipe', (creq, cres) => {
 				const presBodyJson = JSON.parse(presBody);
 				cres.send(JSON.stringify(
 					{
-						title: (title.exec(presBodyJson.choices[0].text) ?? ['Mysterious Mystery Special'])[0],
-						ingredients: ((ingredients.exec(presBodyJson.choices[0].text) ?? ["1. Ingredients not found... please retry."])[0]).match(listItem),
-						instructions: ((instructions.exec(presBodyJson.choices[0].text) ?? ["1. Instructions not found... please retry."])[0]).match(listItem)
+						title: (title.exec(presBodyJson.choices[0].text) || ['Mysterious Mystery Special'])[0],
+						ingredients: ((ingredients.exec(presBodyJson.choices[0].text) || ["1. Ingredients not found... please retry."])[0]).match(listItem),
+						instructions: ((instructions.exec(presBodyJson.choices[0].text) || ["1. Instructions not found... please retry."])[0]).match(listItem)
 					}
 				));
 			});
