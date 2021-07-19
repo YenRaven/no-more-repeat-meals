@@ -1,0 +1,5 @@
+{
+    "rewrites":[
+        { "source": "/api/:command", "destination": "http://localhost:3001/api/:command" },
+    ]
+}
