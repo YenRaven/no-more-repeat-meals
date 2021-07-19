@@ -9,7 +9,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = process.env.DEV_PORT || 3001;
+const port = process.env.DEV_PORT || 3000;
 const localhost = process.env.LOCALHOST || 'localhost';
 
 app.use(bodyParser.json({limit: '6mb', extended: true}));
@@ -214,6 +214,8 @@ Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ing
 	}));
 	creq.pipe(preq, {end: true});
 });
+
+app.use(express.static('build'));
 
 // const privateKey = fs.readFileSync(path.join(__dirname, 'server.key'), 'utf8');
 // const certificate = fs.readFileSync(path.join(__dirname, 'server.cert'), 'utf8');

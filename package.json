@@ -68,7 +68,7 @@
         "ignore": [
             "./src/report-web-vitals.ts",
             "./src/setupTests.ts",
-            "./src/server.js"
+            "./public/server.js"
         ]
     }
 }
