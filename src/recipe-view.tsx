@@ -86,6 +86,9 @@ export const RecipeView = ({ingredients, additionalIngredients, limitToProvided}
 				</ol>
 			</Grid>
 		}
+		<Grid className="donate-section" item xs={12}>
+			<p>Get a good recipe? Please <Link to="/donate">consider donating</Link> to keep this site running!</p>
+		</Grid>
 		<Grid className="recipe-btn" item xs={6}>
 			<Link className="App-link" to="/get-started">
 				<Fab variant="extended"><NavigateBeforeIcon fontSize="small"/> Back</Fab>
