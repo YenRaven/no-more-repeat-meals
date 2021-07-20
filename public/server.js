@@ -171,41 +171,28 @@ app.use('/api/request-recipe', (creq, cres) => {
 	console.log('Getting data from request body...', creq.body);
 	const {ingredients, additionalIngredients, limitToProvided} = creq.body;
 	const ingredientsArrayToPrompt = (ingredients) => ingredients.map((ingredient, index) => `${index === ingredients.length-1 && ingredients.length>1 ? "and " : ""}${ingredient}`).join(', ');
-	const prompt = `Create a recipe that serves 4 people that uses up 6 oz leftover goulash, 1 medium leftover pork chop, 6 oz leftover enchilada, and 1 cup leftover pinto beans, that optionally includes water, garlic, and red pepper, and that can include other ingredients.
-
+	const prompt = `Create a recipe that serves 4 people that uses up 6 large eggs, and 8 oz leftover spaghetti, that optionally includes water, cherry tomatoes, and red pepper, and that can include other ingredients.
 --BEGIN RECIPE--
 TITLE:
-Leftover goulash enchilada casserole
+Pasta Frittata
 
 INGREDIENTS:
-1. 6 oz leftover goulash
-2. 1 medium leftover pork chop
-3. 6 oz leftover enchilada
-4. 1/2 small onion chopped
-5. 1/2 small red bell pepper chopped
-6. 2 whole cloves garlic chopped
-7. 1/2 tsp red pepper flakes
-8. 1/2 tsp cumin
-9. 1/2 package corn chips
-10. 1 cup leftover pinto beans
-11. 1/2 cup salsa
-12. 8 oz shredded cheddar cheese
-13. 1/4 whole head lettuce
-14. 1 whole tomato chopped
-15. 1 whole avocado chopped
-16. 1/2 cup sour cream
+1. 6 large eggs
+2. 1/4 cup half-and-half
+3. 1/4 tsp salt
+4. 2 tbsp olive oil
+5. 8 oz leftover spaghetti
+1/2 cup halved cherry tomatoes
+1/2 cup shredded mozzarella and Parmesan cheese
 
 INSTRUCTIONS:
-1. Pulse leftover goulash, pork chop, and leftover enchilada in a food processor until chunky.
-2. Add chopped onion, chopped garlic, chopped red pepper, red pepper flakes, cumin and combine in mixture.
-3. In a 9 x 13 inch pan, lightly coat in non stick spray and layer corn chips on the bottom.
-4. Add a layer of leftover pinto beans, followed by the combined mixture, and cover with salsa.
-5. Bake covered for 45 minuets until heated through.
-6. Cover with corn chips and shredded cheddar cheese.  Bake uncovered for 10 minuets.
-7. Top with lettuce, tomato, avocado, and sour cream to taste and serve.
-
+1. Heat the oven to 375°F. Whisk together the eggs, half-and-half, and salt and set aside.
+2. Warm the olive oil in a 10-inch oven-safe skillet over medium-high heat. When the oil is hot, add the pasta and quickly reheat, tossing to keep the pasta from browning and coating the noodles with the oil.
+3. Pour the egg mixture into the pan and shake the pan to settle the egg around the pasta. Continue to cook — placing the tomatoes on top and sprinkling with the cheese — until the egg is beginning to set around the edge of the pan, about 5 minutes.
+4. Transfer the frittata to the oven and bake until the egg is set and the cheese is melted, 18 to 20 minutes.
 """
-Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ingredients.map(({food, amount, measurement}) => `${amount} ${measurement} ${food}`))}, that optionally includes ${ingredientsArrayToPrompt(additionalIngredients)}, and ${limitToProvided ? 'that can only use these ingredients.' : 'that can use other ingredients.'}`;
+Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ingredients.map(({food, amount, measurement}) => `${amount} ${measurement} ${food}`))}, that optionally includes ${ingredientsArrayToPrompt(additionalIngredients)}, and ${limitToProvided ? 'that can only use these ingredients.' : 'that can use other ingredients.'}
+--BEGIN RECIPE--`;
 	if(prompt.length <= 4000){
 		console.log('writing request to openAI api.', prompt);
 		preq.write(JSON.stringify({
