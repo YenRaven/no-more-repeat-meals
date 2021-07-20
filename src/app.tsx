@@ -21,7 +21,7 @@ function App() {
 	const [additionalIngredients, setAdditionalIngredients] = useState<string[]>([]);
 	const [limitToProvided, setLimitToProvided] = useState(false);
 	return (
-		<Router>
+		<Router basename="/openAI-demo-0a1b0429633c4d5c5bb4a6deb461e0d1">
 			<div className="App">
 				<header>
 					<h1><i>No More</i> Repeat Meals!</h1>

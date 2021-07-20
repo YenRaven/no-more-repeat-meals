@@ -25,8 +25,9 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 		[ingredients, onChange],
 	);
 	const handleAdd = useCallback(
-		() => {
-			const newChip = addInputRef.current ? addInputRef.current?.value : '';
+		(value?: string | null) => {
+			const newChip = value ?? (addInputRef.current ? addInputRef.current?.value ?? '' : '');
+			console.log(newChip);
 			if (newChip !== '') {
 				setAdditionalIngredientValue('');
 
@@ -35,7 +36,7 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 				);
 			}
 		},
-		[ingredients, onChange],
+		[ingredients, onChange, setAdditionalIngredientValue],
 	);
 	const handleAutoComplete = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,6 +90,10 @@ export const AdditionalIngredientList = ({ingredients, onChange}: Props) => {
 					filterOptions={options => options}
 					freeSolo
 					options={autocompleteOptions}
+					inputValue={additionalIngredientValue}
+					onChange={(event, value) => {
+						handleAdd(value);
+					}}
 					renderInput={parameters => <TextField {...parameters} inputRef={addInputRef} id="additional-ingredient" label="Ingredient" value={additionalIngredientValue} onChange={handleAutoComplete} />}
 				/>
 			</FormControl>

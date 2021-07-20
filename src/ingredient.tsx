@@ -19,8 +19,8 @@ type Props = IngredientProps & {
 export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 	const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
 	const [autocompleteLimiter, setAutocompleteLimiter] = useState<number>();
-	const handleFoodChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-		const food = event.target.value;
+	const handleFoodChange = useCallback((event: React.ChangeEvent<Record<string, unknown>> | null, value: string | null = null) => {
+		const food = value ?? '';
 		if (food.length <= 200) {
 			onChange({food, amount, measurement});
 
@@ -55,6 +55,9 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 			}
 		}
 	}, [amount, measurement, onChange, autocompleteLimiter]);
+	const handleFoodInputChangeEvent = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+		handleFoodChange(null, event.target.value);
+	}, [handleFoodChange]);
 	const handleAmountChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^\d*\s?\d*\/?\.?\d*$/.test(event.target.value) && event.target.value.length <= 10) {
 			onChange({food, amount: event.target.value, measurement});
@@ -98,9 +101,10 @@ export const Ingredient = ({food, amount, measurement, onChange}: Props) => {
 					options={autocompleteOptions}
 					filterOptions={options => options}
 					inputValue={food}
+					onChange={handleFoodChange}
 					renderInput={
 						parameters => (
-							<TextField {...parameters} inputRef={foodInput} className="food" label="Ingredient" value={food} onChange={handleFoodChange} autoFocus />
+							<TextField {...parameters} inputRef={foodInput} className="food" label="Ingredient" value={food} onChange={handleFoodInputChangeEvent} autoFocus />
 						)
 					}
 				/>

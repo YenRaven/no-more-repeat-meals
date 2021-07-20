@@ -76,7 +76,7 @@ app.use('/api/ingredient-autocomplete', (creq, cres) => {
 				const presBodyJson = JSON.parse(presBody);
 				cres.send(JSON.stringify(
 					{
-						autocompleteOpts: presBodyJson.choices[0].text.match(autocompleteOptions)
+						autocompleteOpts: _.uniq(presBodyJson.choices[0].text.match(autocompleteOptions))
 					}
 				));
 			});
@@ -223,10 +223,14 @@ Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ing
 	}
 });
 
-app.use(express.static('build'));
+app.use(express.static('build', {index: false}));
+
+app.use('/openAI-demo-0a1b0429633c4d5c5bb4a6deb461e0d1', (req, res) => {
+	res.sendFile(path.join(__dirname,'./index.html'));
+});
 
 app.use('/', (req, res) => {
-	res.sendFile(path.join(__dirname,'./index.html'));
+	res.sendStatus(404);
 });
 
 // const privateKey = fs.readFileSync(path.join(__dirname, 'server.key'), 'utf8');
@@ -241,6 +245,6 @@ httpsServer.listen(port, error => {
 	if (error) {
 		console.error(error);
 	} else {
-		console.info('==> ??  Listening on port %s. Open up https://%s:%s/ in your browser.', port, localhost, port);
+		console.info('==> ??  Listening on port %s. Open up http://%s:%s/ in your browser.', port, localhost, port);
 	}
 });
