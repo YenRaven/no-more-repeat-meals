@@ -318,12 +318,8 @@ Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ing
 
 app.use(express.static('build', {index: false}));
 
-app.use('/openAI-demo-0a1b0429633c4d5c5bb4a6deb461e0d1', (req, res) => {
-	res.sendFile(path.join(__dirname,'./index.html'));
-});
-
 app.use('/', (req, res) => {
-	res.sendStatus(404);
+	res.sendFile(path.join(__dirname,'./index.html'));
 });
 
 // const privateKey = fs.readFileSync(path.join(__dirname, 'server.key'), 'utf8');
