@@ -12,6 +12,92 @@ const app = express();
 const port = process.env.DEV_PORT || 3000;
 const localhost = process.env.LOCALHOST || 'localhost';
 
+const openAIContentFilter = (textToClasify) => {
+	return new Promise((resolve, reject) => {
+		console.log('Attempting to connect to openAI api!');
+		const proxy = 'api.openai.com';
+		const options = {
+			// Host to forward to
+			host: proxy,
+			// Port to forward to
+			protocol: 'https:',
+			port: 443,
+			// Path to forward to
+			path: '/v1/engines/content-filter-alpha-c4/completions',
+			// Request method
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + process.env.API_KEY,
+			},
+		};
+		const preq = https
+			.request(options, pres => {
+				pres.on('data', (d) => {
+					const presBody = d.toString();
+					console.log(presBody);
+					const presBodyJson = JSON.parse(presBody);
+					let outputLabel = presBodyJson["choices"][0]["text"];
+					const toxicThreshold = -0.355;
+					let logprobs;
+					switch(outputLabel){
+						case "2":
+							// If the model returns "2", return its confidence in 2 or other output-labels
+							logprobs = presBodyJson["choices"][0]["logprobs"]["top_logprobs"][0]
+						
+							// If the model is not sufficiently confident in "2",
+							// choose the most probable of "0" or "1"
+							// Guaranteed to have a confidence for 2 since this was the selected token.
+							if (logprobs["2"] < toxicThreshold){
+								const logprob0 = logprobs["0"];
+								const logprob1 = logprobs["1"];
+						
+								// If both "0" and "1" have probabilities, set the output label
+								// to whichever is most probable
+								if(logprob0 && logprob1){
+									if(logprob0 >= logprob1){
+										outputLabel = "0"
+									}else{
+										outputLabel = "1"
+									}
+								}else if(logprob0){
+									outputLabel = "0";
+								}else if(logprob1){
+									outputLabel = "1"
+								}
+							}
+							resolve(outputLabel);
+						break;
+						case "0":
+						case "1":
+							resolve(outputLabel);
+						break;
+						default:
+							resolve("2");
+						break;
+					}
+				});
+			})
+			.on('error', e => {
+				reject(e);
+			});
+		console.log('Getting data from request body...', textToClasify);
+		const prompt = `<|endoftext|>${textToClasify}
+--
+Label:`;
+		console.log('writing request to openAI api.', prompt);
+		preq.write(JSON.stringify({
+			prompt,
+			temperature: 0,
+			max_tokens: 1,
+			top_p: 0,
+			logprobs: 10,
+			stop: ['\n"""'],
+		}));
+		preq.end();
+	})
+}
+
 app.use(bodyParser.json({limit: '6mb', extended: true}));
 
 app.use('/api/ingredient-autocomplete-test', (req, res) => {
@@ -74,11 +160,21 @@ app.use('/api/ingredient-autocomplete', (creq, cres) => {
 				const presBody = d.toString();
 				console.log(presBody);
 				const presBodyJson = JSON.parse(presBody);
-				cres.send(JSON.stringify(
-					{
-						autocompleteOpts: _.uniq(presBodyJson.choices[0].text.match(autocompleteOptions))
+				openAIContentFilter(presBodyJson.choices[0].text).then((res) => {
+					if(res !== "2"){
+						cres.send(JSON.stringify(
+							{
+								autocompleteOpts: _.uniq(presBodyJson.choices[0].text.match(autocompleteOptions))
+							}
+						));
+					}else{
+						cres.send(JSON.stringify(
+							{
+								autocompleteOpts: []
+							}
+						));
 					}
-				));
+				})
 			});
 		})
 		.on('error', e => {
@@ -150,13 +246,23 @@ app.use('/api/request-recipe', (creq, cres) => {
 				const presBody = d.toString();
 				console.log(presBody);
 				const presBodyJson = JSON.parse(presBody);
-				cres.send(JSON.stringify(
-					{
-						title: (title.exec(presBodyJson.choices[0].text) || ['Mysterious Mystery Special'])[0],
-						ingredients: ((ingredients.exec(presBodyJson.choices[0].text) || ["1. Ingredients not found... please retry."])[0]).match(listItem),
-						instructions: ((instructions.exec(presBodyJson.choices[0].text) || ["1. Instructions not found... please retry."])[0]).match(listItem)
+				openAIContentFilter(presBodyJson.choices[0].text).then((res) => {
+					if(res !== "2"){
+						cres.send(JSON.stringify(
+							{
+								title: (title.exec(presBodyJson.choices[0].text) || ['Mysterious Mystery Special'])[0],
+								ingredients: ((ingredients.exec(presBodyJson.choices[0].text) || ["1. Ingredients not found... please retry."])[0]).match(listItem),
+								instructions: ((instructions.exec(presBodyJson.choices[0].text) || ["1. Instructions not found... please retry."])[0]).match(listItem)
+							}
+						));
+					}else{
+						cres.send(JSON.stringify({
+							title: "Oops!",
+							ingredients: [],
+							instructions: ["Something went wrong with this request! Please go back and make sure all you ingredients are correct."]	
+						}));
 					}
-				));
+				});
 			});
 		})
 		.on('error', e => {
@@ -170,7 +276,7 @@ app.use('/api/request-recipe', (creq, cres) => {
 		});
 	console.log('Getting data from request body...', creq.body);
 	const {ingredients, additionalIngredients, limitToProvided} = creq.body;
-	const ingredientsArrayToPrompt = (ingredients) => ingredients.map((ingredient, index) => `${index === ingredients.length-1 && ingredients.length>1 ? "and " : ""}${ingredient}`).join(', ');
+	const ingredientsArrayToPrompt = (ingredients) => ingredients.map((ingredient, index) => `${index === ingredients.length-1 && ingredients.length>1 ? "and " : ""}${ingredient.toLowerCase()}`).join(', ');
 	const prompt = `Create a recipe that serves 4 people that uses up 6 large eggs, and 8 oz leftover spaghetti, that optionally includes water, cherry tomatoes, and red pepper, and that can include other ingredients.
 --BEGIN RECIPE--
 TITLE:
@@ -191,14 +297,14 @@ INSTRUCTIONS:
 3. Pour the egg mixture into the pan and shake the pan to settle the egg around the pasta. Continue to cook — placing the tomatoes on top and sprinkling with the cheese — until the egg is beginning to set around the edge of the pan, about 5 minutes.
 4. Transfer the frittata to the oven and bake until the egg is set and the cheese is melted, 18 to 20 minutes.
 """
-Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ingredients.map(({food, amount, measurement}) => `${amount} ${measurement} ${food}`))}, that optionally includes ${ingredientsArrayToPrompt(additionalIngredients)}, and ${limitToProvided ? 'that can only use these ingredients.' : 'that can use other ingredients.'}
+Create a recipe that serves 2 people that uses up ${ingredientsArrayToPrompt(ingredients.map(({food, amount, measurement}) => `${amount} ${measurement} ${food}`))}, that optionally includes ${ingredientsArrayToPrompt(['water', ...additionalIngredients])}, and ${limitToProvided ? 'that can only use these ingredients.' : 'that can use other ingredients.'}
 --BEGIN RECIPE--`;
 	if(prompt.length <= 4000){
 		console.log('writing request to openAI api.', prompt);
 		preq.write(JSON.stringify({
 			prompt,
 			temperature: 0.5,
-			max_tokens: 500,
+			max_tokens: 200,
 			top_p: 1,
 			frequency_penalty: 0,
 			presence_penalty: 0,
